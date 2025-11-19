@@ -53,6 +53,15 @@ using XXhash, Test
             @test xxh3_128(m) == xxh3_128(v)
         end
     end
+
+    @testset "codeunits" begin
+        for s in ["abc123", "The quick brown fox jumps over the lazy dog", "", "😊🚀🌟"]
+            @test xxh32(codeunits(s)) == xxh32(s)
+            @test xxh64(codeunits(s)) == xxh64(s)
+            @test xxh3_64(codeunits(s)) == xxh3_64(s)
+            @test xxh3_128(codeunits(s)) == xxh3_128(s)
+        end
+    end
 end
 
 end  # module
