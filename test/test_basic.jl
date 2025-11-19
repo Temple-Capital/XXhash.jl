@@ -42,6 +42,17 @@ using XXhash, Test
         @test xxhash_digest(s3_64) == xxh3_64(v)
         @test xxhash_digest(s3_128) == xxh3_128(v)
     end
+
+    if VERSION >= v"1.11"
+        @testset "Memory" begin
+            v = [1,2,3]
+            m = Memory{eltype(v)}(v)
+            @test xxh32(m) == xxh32(v)
+            @test xxh32(m) == xxh32(v)
+            @test xxh3_64(m) == xxh3_64(v)
+            @test xxh3_128(m) == xxh3_128(v)
+        end
+    end
 end
 
 end  # module
