@@ -42,6 +42,26 @@ using XXhash, Test
         @test xxhash_digest(s3_64) == xxh3_64(v)
         @test xxhash_digest(s3_128) == xxh3_128(v)
     end
+
+    if VERSION >= v"1.11"
+        @testset "Memory" begin
+            v = [1,2,3]
+            m = Memory{eltype(v)}(v)
+            @test xxh32(m) == xxh32(v)
+            @test xxh32(m) == xxh32(v)
+            @test xxh3_64(m) == xxh3_64(v)
+            @test xxh3_128(m) == xxh3_128(v)
+        end
+    end
+
+    @testset "codeunits" begin
+        for s in ["abc123", "The quick brown fox jumps over the lazy dog", "", "😊🚀🌟"]
+            @test xxh32(codeunits(s)) == xxh32(s)
+            @test xxh64(codeunits(s)) == xxh64(s)
+            @test xxh3_64(codeunits(s)) == xxh3_64(s)
+            @test xxh3_128(codeunits(s)) == xxh3_128(s)
+        end
+    end
 end
 
 end  # module
